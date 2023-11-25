@@ -2,10 +2,12 @@
   "name": "striveblognew",
   "version": "0.1.0",
   "description": "clone striveblog",
-  "main": "index.js",
+  "main": "src/index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js"
+  }, 
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DomenicoCoppeta/striveblognew.git"
@@ -21,5 +23,7 @@
     "mongoose": "^8.0.1",
     "nodemon": "^3.0.1"
   },
-  "dev": "nodemon src/index.js"
+  "devDependencies": {
+    "nodemon":"^3.0.1"
+  }
 }

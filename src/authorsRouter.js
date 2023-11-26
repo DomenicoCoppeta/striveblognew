@@ -1,16 +1,20 @@
 import express from 'express';
 import { Author } from './models/authors.js'
+import { checkAuth } from './middlewares/checkAuth.js';
+import blogPostsRouter from './blogPostsRouter.js';
 
 const authorsRouter = express.Router();
 
-authorsRouter.get('/test', async (req, res) => {
-    // res.json({ message: "Author router working"})  
+// authorsRouter.use(checkAuth);
 
-    const author = await Author.findById("656222e71768fad0c2a92186");
-    res.json(author);
+authorsRouter.get('/test', async function testMiddleware(req, res) {
+    res.json({ message: "Author router working"})  
+
+    // const author = await Author.findById("656222e71768fad0c2a92186");
+    // res.json(author);
 });
 
-authorsRouter.get("/", async (req, res, next) => {
+authorsRouter.get("/", async (req,  res, next) => {
     try {
       const authors = await Author.find({});
       res.json(authors);
@@ -35,7 +39,7 @@ authorsRouter.get("/:id", async (req, res, next) => {
     }
 });
 
-authorsRouter.post('/', async (req, res, next) => {
+authorsRouter.post('/', checkAuth, async (req, res, next) => {
     try {
         const newAuthor = new Author(req.body);
 
@@ -49,7 +53,7 @@ authorsRouter.post('/', async (req, res, next) => {
 });
 
 
-authorsRouter.put('/:id', async (req, res, next) => {
+authorsRouter.put('/:id', checkAuth, async (req, res, next) => {
     try {
         const { id } = req.params
         
@@ -63,7 +67,7 @@ authorsRouter.put('/:id', async (req, res, next) => {
     });
 
 
-authorsRouter.delete('/:id', async (req, res, next) => {
+authorsRouter.delete('/:id', checkAuth, async (req, res, next) => {
     try {
         const { id } = req.params
         const deletedAuthor = await Author.findByIdAndDelete(id);
@@ -78,5 +82,6 @@ authorsRouter.delete('/:id', async (req, res, next) => {
     }
 });
 
+authorsRouter.use("/blogPosts", blogPostsRouter)
 
 export default authorsRouter

@@ -2,6 +2,8 @@ import express from 'express';
 import apiRouter from "./apiRouter.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import list from "express-list-endpoints";
+import genericError from "./middlewares/genericError.js"
 
 const server = express();
 
@@ -11,7 +13,7 @@ dotenv.config();
 
 server.use("/api", apiRouter);
 
-// mongodb+srv://domenicocoppeta:vsc7PQWQXHNbgMWx@epicode-m6.vcya6og.mongodb.net/
+server.use(genericError);
 
 mongoose
     .connect
@@ -19,6 +21,7 @@ mongoose
     .then(()=>{
         server.listen(port, () => {
             console.log("Server listening on port " + port);
+            // console.log(list(server));
         });
     })
     .catch(() => {

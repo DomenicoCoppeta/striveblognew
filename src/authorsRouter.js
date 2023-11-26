@@ -29,7 +29,6 @@ authorsRouter.get("/:id", async (req, res, next) => {
     if (!author) {
         return res.status(404).send();
     }
-https://github.com/luisanton-io/wdpt0323-first-express/blob/main/src/userRouter.js
     res.json(author);
     } catch (error) {
      next(error);

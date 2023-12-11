@@ -18,8 +18,7 @@ const AuthorSchema = new Schema ({
         required: true,
     },
     avatar: {
-        type: String,  
-        required: true,
+        type: String,
     }
 });
 

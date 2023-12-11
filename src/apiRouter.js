@@ -1,5 +1,6 @@
 import express from "express";
 import authorsRouter from "./authorsRouter.js"
+import blogPostsRouter from './blogPostsRouter.js';
 
 const apiRouter = express.Router();
 
@@ -15,6 +16,7 @@ res.status(200).send();
 })
 
 apiRouter.use("/authors", authorsRouter)
+apiRouter.use("/blogPosts", blogPostsRouter)
 
 
 export default apiRouter

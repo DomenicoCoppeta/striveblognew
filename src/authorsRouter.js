@@ -1,17 +1,15 @@
 import express from 'express';
 import { Author } from './models/authors.js'
 import { checkAuth } from './middlewares/checkAuth.js';
-import blogPostsRouter from './blogPostsRouter.js';
+import bcrypt from "bcrypt";
 
 const authorsRouter = express.Router();
 
 // authorsRouter.use(checkAuth);
 
 authorsRouter.get('/test', async function testMiddleware(req, res) {
-    res.json({ message: "Author router working"})  
+    res.json({ message: "Authors router working"})  
 
-    // const author = await Author.findById("656222e71768fad0c2a92186");
-    // res.json(author);
 });
 
 authorsRouter.get("/", async (req,  res, next) => {
@@ -21,15 +19,14 @@ authorsRouter.get("/", async (req,  res, next) => {
     } catch (error) {
       next(error);
     }
-  });
+  })
   
 
-authorsRouter.get("/:id", async (req, res, next) => {
+.get("/:id", async (req, res, next) => {
  try {
  const { id } = req.params
  const author = await Author.findById(id);
 
-    
     if (!author) {
         return res.status(404).send();
     }
@@ -37,23 +34,21 @@ authorsRouter.get("/:id", async (req, res, next) => {
     } catch (error) {
      next(error);
     }
-});
+})
 
-authorsRouter.post('/', checkAuth, async (req, res, next) => {
+.post('/', checkAuth, async (req, res, next) => {
+    // const password = 
     try {
-        const newAuthor = new Author(req.body);
-
-        await newAuthor.save();
-
+        const newAuthor = new Author.create(req.body);
         res.status(201).json(newAuthor);
     } catch (error) {
         error.statusCode = 400;
         next(error);
     }
-});
+})
 
 
-authorsRouter.put('/:id', checkAuth, async (req, res, next) => {
+.put('/:id', checkAuth, async (req, res, next) => {
     try {
         const { id } = req.params
         
@@ -64,10 +59,10 @@ authorsRouter.put('/:id', checkAuth, async (req, res, next) => {
     } catch (error) {
         next(error);
         }
-    });
+    })
 
 
-authorsRouter.delete('/:id', checkAuth, async (req, res, next) => {
+.delete('/:id', checkAuth, async (req, res, next) => {
     try {
         const { id } = req.params
         const deletedAuthor = await Author.findByIdAndDelete(id);
@@ -82,6 +77,8 @@ authorsRouter.delete('/:id', checkAuth, async (req, res, next) => {
     }
 });
 
-authorsRouter.use("/blogPosts", blogPostsRouter)
+
+
+
 
 export default authorsRouter

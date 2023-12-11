@@ -14,29 +14,32 @@ const BlogPostSchema = new Schema({
         required: true,
     },
     readTime: { 
-        value: {
-            type: Number,
-            required: true,
-        },
-        unit: {
-            type: Number,
-            required: true,
-        }
+        value: Number,
+        unit: String,
     },
     author: { 
-        name: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: 'authors',
             required: true,
-        },
-        avatar: {
-            type: Number,
-            required: true,
-        }
     },
     content: {
         type: String,
         required: true,
     },
+    comments: [
+        {
+            author: { 
+                type: Schema.Types.ObjectId,
+                ref: 'authors',
+                required: true,
+            },
+            text: { type: String,
+                    required: true,
+            },
+            // replyTo: { type: Schema.Types.ObjectId,
+            //             ref: 'blogPost.comments'}
+        }
+    ]
 });
 
-export const BlogPost = mongoose.model('BlogPost', BlogPostSchema);
+export const BlogPost = mongoose.model('blogposts', BlogPostSchema);

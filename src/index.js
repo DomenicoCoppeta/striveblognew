@@ -2,26 +2,32 @@ import express from 'express';
 import apiRouter from "./apiRouter.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
 import list from "express-list-endpoints";
 import genericError from "./middlewares/genericError.js"
 
-const server = express();
+const app = express();
+const port = process.env.PORT || 3030;
 
-const port = 3030;
 
+app.use(cors());
 dotenv.config();
 
-server.use("/api", apiRouter);
 
-server.use(genericError);
+app.use("/api", apiRouter);
+app.use(genericError);
+app.get("/ok", (req, res) => {
+    res.status(200).send()}
+    );
+    
 
 mongoose
     .connect
         (process.env.MONGO_URL)
     .then(()=>{
-        server.listen(port, () => {
+        app.listen(port, () => {
             console.log("Server listening on port " + port);
-            // console.log(list(server));
+            // console.log(list(app));
         });
     })
     .catch(() => {
